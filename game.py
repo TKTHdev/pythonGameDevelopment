@@ -26,7 +26,7 @@ class incomingItem:
         self.vx=pyxel.cos(angular)
         self.vy=pyxel.sin(angular)
         self.incomingSpeed=4
-        self.houkou=2000
+        self.houkou=200
 
     def move(self):
         self.x-=self.vx * self.incomingSpeed
