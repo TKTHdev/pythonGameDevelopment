@@ -125,19 +125,31 @@ class Game:
 
 
         if hands:
-            lmList=hands[0]["lmList"]
+            firstlmList=hands[0]["lmList"]
+            secondlmList=hands[1]["lmList"]
             x,y,w,h=hands[0]['bbox']
-            x1=lmList[5][0]
-            y1=lmList[5][1]
+            ox1=firstlmList[5][0]
+            oy1=firstlmList[5][1]
 
-            x2=lmList[17][0]
-            y2=lmList[17][1]
+            ox2=firstlmList[17][0]
+            oy2=firstlmList[17][1]
 
-            self.distance=int(math.sqrt((y2-y1)**2+(x2-x1)**2))
+            sx1 = secondlmList[5][0]
+            sy1 = secondlmList[5][1]
+
+            sx2 = secondlmList[17][0]
+            sy2 = secondlmList[17][1]
+
+
+
+            self.distance=int(math.sqrt((oy2-oy1)**2+(ox2-ox1)**2))
             A,B,C=self.coff
             centimeterD=A*self.distance+B*self.distance+C
             cvzone.putTextRect(img,f'{int(centimeterD) }cm  (70cm is ok)',(x,y))
             self.y=100+5*(66-centimeterD)
+
+
+
         cv2.imshow("Image",img)
         cv2.waitKey(1)
 
