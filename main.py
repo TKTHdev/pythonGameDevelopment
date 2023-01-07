@@ -1,7 +1,12 @@
 from detect import detect
 from game import Game
-#first make sure player can be detected
-#detect()
+import pyxel
 
-#then start the game!!
-a=Game()
+
+#gamemode=detect()
+gamemode=1
+
+if gamemode==1:
+    a=Game()
+
+

@@ -19,16 +19,7 @@ def detect():
 
     coff=np.polyfit(disT,cmDisT,2)
 
-    upperRight = "upperRight"
-    upperLeft = "upperLeft"
-    bottomRight = "bottomRight"
-    bottomLeft = "bottomLeft"
 
-    uR=False
-    uL=False
-    bR=False
-    bL=False
-    started=False
 
     while True:
         success,img=cap.read()
@@ -46,23 +37,15 @@ def detect():
 
             x2=lmList[17][0]
             y2=lmList[17][1]
+
             print(x1,y1)
 
             if (100<x1<200 and 100<y1<200):
-                #upperLeft="OK!"
-                uL=True
+                return 1
 
-            if (1050<x1<1250 and 100<y1<200):
-                #upperRight="OK!"
-                uR=True
+            if (100<x1<200 and 500<y1<600):
+                return 2
 
-            if (1050<x1<1250 and 600<y1<700):
-                #bottomRight="OK!"
-                bR=True
-
-            if (100<x1<200 and 600<y1<700):
-                #bottomLeft="OK!"
-                bL=True
 
             distance=int(math.sqrt((y2-y1)**2+(x2-x1)**2))
             A,B,C=coff
@@ -70,21 +53,13 @@ def detect():
 
             cv2.rectangle(img,(x,y),(x+w,y+h),(255,0,255),3)
             cvzone.putTextRect(img,f'{int(centimeterD) }cm  (70cm is ok)',(x,y))
-        if not uL:
-            cvzone.putTextRect(img, upperLeft, (100, 100))
+        cvzone.putTextRect(img, "Game1", (100, 100))
 
-        if not uR:
-            cvzone.putTextRect(img, upperRight, (100, 200))
+        cvzone.putTextRect(img, "Game2", (100, 500))
 
-        if not bL:
-            cvzone.putTextRect(img, bottomLeft, (100, 300))
-
-        if not bR:
-            cvzone.putTextRect(img, bottomRight, (100, 400))
-
-        if not started and uL and uR and bL and bR:
-            return True
-            break;
+        #if not started and uL and uR and bL and bR:
+         #   return True
+          #  break;
 
 
         cv2.imshow("Image",img)

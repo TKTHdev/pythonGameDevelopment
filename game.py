@@ -15,7 +15,7 @@ class CheckBall:
         self.clear = False;
 
 
-checkballs = [CheckBall(5), CheckBall(195)]
+checkballs = [CheckBall(5), CheckBall(185)]
 
 
 class incomingItem:
@@ -138,11 +138,13 @@ class Game:
             Y2=lmList[0][1]
 
             if Y1>Y2:
-                self.y+=5
+                self.y=min(self.y+5,185)
                 self.status="DOWN"
             else:
-                self.y-=5
+                self.y=max(self.y-5,0)
                 self.status="UP"
+
+            print(self.y)
 
             #if X1>X2:
                 #self.x+=2
