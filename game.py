@@ -38,7 +38,7 @@ class incomingItem:
     def catched(self):
         self.x = 200
         self.y = random.randrange(20, 180)
-        self.angular = random.randrange(15, 75)
+        self.angular = random.randrange(15, 55)
         self.vx = pyxel.cos(self.angular)
         self.vy = pyxel.sin(self.angular)
 
@@ -46,7 +46,7 @@ class incomingItem:
 
 
 firsty = random.randrange(20, 180)
-firstAngular = random.randrange(30, 75)
+firstAngular = random.randrange(30, 55)
 
 incomingItems = [incomingItem(firsty, firstAngular)]
 
@@ -65,6 +65,8 @@ class Game:
         self.cmDisT = [20, 25, 30, 35, 40, 45, 50, 55, 60, 70, 75, 80, 85, 90, 95, 100]
         pyxel.init(200, 200, title="Dynamic Action2", fps=15)
         pyxel.load("assets/art2.pyxres")
+
+        self.x=30
 
         self.y = 100
         self.is_alive = True
@@ -129,17 +131,25 @@ class Game:
             hand=hands[0]
             fingers=self.detector.fingersUp(hand)
 
+            X1=lmList[8][0]
+            X2=lmList[0][0]
+
             Y1=lmList[8][1]
             Y2=lmList[0][1]
 
             if Y1>Y2:
                 self.y+=5
                 self.status="DOWN"
-
-
             else:
                 self.y-=5
                 self.status="UP"
+
+            #if X1>X2:
+                #self.x+=2
+
+            #else:
+                #self.x--5
+
 
             cvzone.putTextRect(img, f'{int(centimeterD)}cm //// {self.status}', (x, y))
 
@@ -160,7 +170,7 @@ class Game:
             pyxel.circ(incoming.x, incoming.y, 10, 6)
 
         # pyxel.rect(10,self.y-20,10,40,8)
-        pyxel.blt(30,self.y,0,4,35,25,20,15)
+        pyxel.blt(self.x,self.y,0,4,35,25,20,15)
         pyxel.text(0, 10, "points:", 5)
         pyxel.text(40, 10, str(self.point), 5)
         pyxel.text(0,30,"score:",5)
