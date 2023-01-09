@@ -8,23 +8,33 @@ import math
 from cvzone.HandTrackingModule import HandDetector
 
 
+
+
+
+
 class incomingObject:
     def __init__(self):
         self.x=200
-        self.y=100
+        self.y=45
         self.ID=random.randrange(0,8)
+
+
 
         if self.ID<=3:
             self.isGarbage=False
+            self.startX=32
         else:
             self.isGarbage=True
+            self.startX=48
+
+        self.clear=False
 
 
-    def move(self,Game2):
-        self.x-=Game2.difficulty
+    def move(self):
+        self.x-=6
 
 
-
+objectXList=[64,80,96,112,64,80,96,112]
 
 incomingObjects=[incomingObject()]
 
@@ -44,11 +54,17 @@ class Game2:
 
         #check if your finger is up!!
         self.up=True
-        self.difficulty=1
+
 
         self.score=0
         self.life=5
+
+        self.count=0
+
+
+
         pyxel.init(200, 200, title="Dynamic Action2", fps=15)
+        pyxel.load("assets/art2.pyxres")
         pyxel.run(self.update,self.draw)
 
 
@@ -89,18 +105,32 @@ class Game2:
                     self.up=True
 
 
-                for item in incomingObjects:
-                    if self.up and item.x>=90 and item.x<=120:
-                        if not item.isGarbage:
-                            self.score+=10
-                        else:
-                            self.life-=1
+
 
                 if self.life==0:
                     pyxel.quit()
 
                 print(self.up)
 
+            for item in incomingObjects:
+
+                item.move()
+
+                if self.up and item.x >= 90 and item.x <= 120 and not item.clear:
+                    if not item.isGarbage:
+                        self.score += 10
+                        item.clear = True
+                    else:
+                        self.life -= 1
+                        item.clear = True
+
+            self.count+=pyxel.rndi(1,11)
+
+
+
+            if self.count%10==0:
+                hello=incomingObject()
+                incomingObjects.append(hello)
 
             cv2.imshow("Image", img)
             cv2.waitKey(1)
@@ -109,6 +139,16 @@ class Game2:
     def update_player(self):
         pass
 
+
     def draw(self):
-        pass
+        pyxel.cls(3)
+
+        pyxel.circ(100,50,10,7)
+        pyxel.circ(100,50,8,6)
+        pyxel.circ(100,50,6,5)
+
+
+        for obj in incomingObjects:
+            if not obj.clear:
+                pyxel.blt(obj.x,obj.y,0,obj.startX,objectXList[obj.ID],16,16,11)
 
