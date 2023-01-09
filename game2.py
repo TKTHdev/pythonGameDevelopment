@@ -18,6 +18,8 @@ class incomingObject:
         self.y=45
         self.ID=random.randrange(0,8)
 
+        self.caught=False
+
 
 
         if self.ID<=3:
@@ -32,6 +34,10 @@ class incomingObject:
 
     def move(self):
         self.x-=5
+
+    def get(self):
+        self.x-=10
+        self.y-=10
 
 
 objectXList=[64,80,96,112,64,80,96,112]
@@ -114,15 +120,20 @@ class Game2:
 
             for item in incomingObjects:
 
-                item.move()
+                if not item.caught:
+                    item.move()
+                else:
+                    item.get()
 
                 if self.up and item.x >= 90 and item.x <= 120 and not item.clear:
                     if not item.isGarbage:
                         self.score += 10
                         item.clear = True
+                        item.caught=True
                     else:
                         self.life -= 1
                         item.clear = True
+                        item.caught=True
 
             self.count+=pyxel.rndi(1,11)
 
@@ -154,6 +165,5 @@ class Game2:
 
 
         for obj in incomingObjects:
-            if not obj.clear:
                 pyxel.blt(obj.x,obj.y,0,obj.startX,objectXList[obj.ID],16,16,11)
 
