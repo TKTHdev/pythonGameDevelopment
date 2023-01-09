@@ -147,6 +147,11 @@ class Game2:
         pyxel.circ(100,50,8,6)
         pyxel.circ(100,50,6,5)
 
+        if self.up:
+            pyxel.blt(80,20,0,21,91,6,7,7)
+        else:
+            pyxel.blt(97,47,0,21,91,6,7,7)
+
 
         for obj in incomingObjects:
             if not obj.clear:
