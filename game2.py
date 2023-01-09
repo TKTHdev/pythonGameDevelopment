@@ -10,17 +10,21 @@ from cvzone.HandTrackingModule import HandDetector
 
 class incomingObject:
     def __init__(self):
-        check=random.randrange(0,1)
-        if check==0:
-            self.isGarbage=False
-        else:
-            self.isGarbage=True
-
         self.x=200
         self.y=100
         self.ID=random.randrange(0,8)
 
-    def move(self):
+        if self.ID<=3:
+            self.isGarbage=False
+        else:
+            self.isGarbage=True
+
+
+    def move(self,Game2):
+        self.x-=Game2.difficulty
+
+
+
 
 incomingObjects=[incomingObject()]
 
@@ -40,6 +44,7 @@ class Game2:
 
         #check if your finger is up!!
         self.up=True
+        self.difficulty=1
 
         self.score=0
         self.life=5
