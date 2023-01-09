@@ -31,7 +31,7 @@ class incomingObject:
 
 
     def move(self):
-        self.x-=6
+        self.x-=5
 
 
 objectXList=[64,80,96,112,64,80,96,112]
