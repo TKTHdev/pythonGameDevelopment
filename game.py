@@ -7,6 +7,7 @@ import numpy as np
 import math
 from cvzone.HandTrackingModule import HandDetector
 
+iti=0
 
 class CheckBall:
     def __init__(self, y):
@@ -50,6 +51,26 @@ firstAngular = random.randrange(30, 55)
 
 incomingItems = [incomingItem(firsty, firstAngular)]
 
+class helpItem:
+    def __init__(self, y, angular):
+        self.x = 200
+        self.y = y
+        self.angular = angular
+        self.vx = pyxel.cos(angular)
+        self.vy = pyxel.sin(angular)
+        self.incomingSpeed = 4
+        self.houkou = 200
+
+    def move(self):
+        self.x -= self.vx * self.incomingSpeed
+        self.y -= self.vy * self.incomingSpeed
+
+        if self.y > 200 or self.y < 0:
+            self.vy *= -1
+
+
+
+helpItems=[]
 
 class Game:
     def __init__(self):
@@ -65,7 +86,6 @@ class Game:
         self.cmDisT = [20, 25, 30, 35, 40, 45, 50, 55, 60, 70, 75, 80, 85, 90, 95, 100]
         pyxel.init(200, 200, title="Dynamic Action2", fps=15)
         pyxel.load("assets/art2.pyxres")
-
         self.x=30
 
         self.y = 100
@@ -73,14 +93,23 @@ class Game:
         self.started = False
 
         self.point = 0
-        self.score=0
+        self.score=5
+
+        self.hit = False
+        self.moveCount = 0
+
+        self.backcol=1
+
+        self.cl1=pyxel.rndi(3,11)
+        self.cl2=pyxel.rndi(3,11)
 
         self.coff = np.polyfit(self.disT, self.cmDisT, 2)
-
+        pyxel.playm(1,loop=True)
         pyxel.run(self.update, self.draw)
 
 
-        self.h
+
+
 
     def update(self):
         if pyxel.btnp(pyxel.KEY_Q):
@@ -99,15 +128,47 @@ class Game:
 
                 if incomingBall.x < 0:
                     incomingBall.x = 200
-                    self.score+=1
-
-                if self.y +25>= incomingBall.y and self.y  <= incomingBall.y and 65 >= incomingBall.x and 30<= incomingBall.x:
-                    incomingBall.catched()
-                    self.point += 1
-
-                    if self.point % 3 == 0:
+                    self.point+=1
+                    if self.point%4*len(incomingItems)==0:
                         ball = incomingItem(random.randrange(20, 180), random.randrange(15, 75))
                         incomingItems.append(ball)
+
+                    luckNum=pyxel.rndi(0,3)
+                    if luckNum%3==0:
+                        newLuck=helpItem(random.randrange(20, 180), random.randrange(15, 75))
+                        helpItems.append(newLuck)
+
+                if self.y +25>= incomingBall.y+7and self.y  <= incomingBall.y+7 and 65 >= incomingBall.x+7 and 30<= incomingBall.x+7:
+                    incomingBall.catched()
+                    self.cl1=pyxel.rndi(3,11)
+                    self.cl2=pyxel.rndi(3,11)
+                    self.hit=True
+                    self.moveCount=0
+                    self.score-=1
+                    if self.score==0:
+                            pyxel.quit()
+
+
+
+        for incomingBall in helpItems:
+                incomingBall.move()
+
+                if incomingBall.x < 0:
+                    incomingBall.x = 200
+                    self.point+=1
+                    if self.point%4*len(incomingItems)==0:
+                        ball = incomingItem(random.randrange(20, 180), random.randrange(15, 75))
+                        incomingItems.append(ball)
+
+
+
+                if self.y +25>= incomingBall.y+5and self.y  <= incomingBall.y+5 and 65 >= incomingBall.x+5 and 30<= incomingBall.x+5:
+                    self.point+=5
+                    incomingBall.x=-10
+
+
+
+
 
     def update_player(self):
 
@@ -140,17 +201,20 @@ class Game:
             if Y1>Y2:
                 self.y=min(self.y+5,185)
                 self.status="DOWN"
+                if self.hit:
+                    self.moveCount+=1
+                    if self.moveCount%10==0:
+                        self.moveCount=0
+                        self.hit=False
+
             else:
                 self.y=max(self.y-5,0)
                 self.status="UP"
-
-            print(self.y)
-
-            #if X1>X2:
-                #self.x+=2
-
-            #else:
-                #self.x--5
+                if self.hit:
+                    self.moveCount+=1
+                    if self.hit%10==0:
+                        self.moveCount=0
+                        self.hit=False
 
 
             cvzone.putTextRect(img, f'{int(centimeterD)}cm //// {self.status}', (x, y))
@@ -159,21 +223,40 @@ class Game:
         cv2.waitKey(1)
 
     def draw(self):
+
+
+        global iti
+
         pyxel.cls(7)
 
+        for i in range(0,200,20):
+            for j in range(0,200,20):
+                if ((i+j)/20)%2==0:
+                    pyxel.blt(i,j,0,0,56,20,20)
+                else:
+                    pyxel.rect(i,j,20,20,self.cl2)
 
 
 
         for ball in checkballs:
             if not ball.clear:
                 pyxel.circ(20, ball.y, 10, 6)
+                pyxel.text(0,100,"Eat the food up and down to start the game!!",0)
 
         for incoming in incomingItems:
-            pyxel.circ(incoming.x, incoming.y, 10, 6)
+            pyxel.blt(incoming.x,incoming.y,0,40,8,15,15,1)
 
-        # pyxel.rect(10,self.y-20,10,40,8)
-        pyxel.blt(self.x,self.y,0,4,35,25,20,15)
-        pyxel.text(0, 10, "points:", 5)
-        pyxel.text(40, 10, str(self.point), 5)
-        pyxel.text(0,30,"score:",5)
-        pyxel.text(40,30,str(self.score),5)
+        if self.hit:
+            pyxel.blt(self.x,self.y,0,0,0,32,32,0)
+
+        else:
+            pyxel.blt(self.x,self.y,0,4,35,25,20,15)
+
+        for helpItem in helpItems:
+            pyxel.blt(helpItem.x,helpItem.y,0,43,41,11,11,1)
+
+        pyxel.text(0,10,"SCORE:",0)
+        pyxel.text(40,10,str(self.point),0)
+
+        pyxel.text(0,30,"LIFE:",0)
+        pyxel.text(40,30,str(self.score),0)

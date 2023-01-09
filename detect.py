@@ -38,12 +38,11 @@ def detect():
             x2=lmList[17][0]
             y2=lmList[17][1]
 
-            print(x1,y1)
 
-            if (100<x1<200 and 100<y1<200):
+            if (200<x1<300 and 100<y1<200):
                 return 1
 
-            if (100<x1<200 and 500<y1<600):
+            if (500<x1<600 and 100<y1<200):
                 return 2
 
 
@@ -55,7 +54,7 @@ def detect():
             cvzone.putTextRect(img,f'{int(centimeterD) }cm  (70cm is ok)',(x,y))
         cvzone.putTextRect(img, "Game1", (100, 100))
 
-        cvzone.putTextRect(img, "Game2", (100, 500))
+        cvzone.putTextRect(img, "Game2", (500, 100))
 
         #if not started and uL and uR and bL and bR:
          #   return True
