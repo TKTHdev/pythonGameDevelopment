@@ -56,10 +56,5 @@ def detect():
 
         cvzone.putTextRect(img, "Game2", (500, 100))
 
-        #if not started and uL and uR and bL and bR:
-         #   return True
-          #  break;
-
-
         cv2.imshow("Image",img)
         cv2.waitKey(1)

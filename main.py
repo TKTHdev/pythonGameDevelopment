@@ -1,5 +1,6 @@
 from detect import detect
 from game import Game
+from game2 import Game2
 import pyxel
 
 
@@ -12,6 +13,7 @@ if gamemode==1:
 
 
 elif gamemode==2:
-    pass
+    a=Game2()
+
 
 
