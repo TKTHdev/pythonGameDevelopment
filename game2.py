@@ -9,6 +9,7 @@ from cvzone.HandTrackingModule import HandDetector
 from playsound import playsound
 
 
+difficulty=5
 
 
 class incomingObject:
@@ -29,10 +30,11 @@ class incomingObject:
             self.startX=48
 
         self.clear=False
+        self.difficulty=5
 
 
     def move(self):
-        self.x-=5
+        self.x-=difficulty
 
     def get(self):
         self.x-=10
@@ -60,6 +62,7 @@ class Game2:
         #check if your finger is up!!
         self.up=True
 
+        self.difficulty=5
 
         self.score=0
         self.life=5
@@ -76,6 +79,7 @@ class Game2:
 
 
     def update(self):
+            global difficulty
 
             #define hand
             success, img = self.cap.read()
@@ -124,9 +128,11 @@ class Game2:
                 else:
                     item.get()
 
-                if self.up and item.x >= 97 and item.x <= 103 and not item.clear:
+                if self.up and item.x >= 88 and item.x <= 102 and not item.clear:
                     if not item.isGarbage:
                         self.score += 10
+                        if self.score%50==0:
+                            difficulty+=1
                         item.clear = True
                         item.caught=True
                     else:
@@ -143,11 +149,6 @@ class Game2:
 
             cv2.imshow("Image", img)
             cv2.waitKey(1)
-
-
-    def update_player(self):
-        pass
-
 
     def draw(self):
         pyxel.cls(3)
@@ -166,6 +167,9 @@ class Game2:
         for obj in incomingObjects:
                 pyxel.blt(obj.x,obj.y,0,obj.startX,objectXList[obj.ID],16,16,11)
 
+        pyxel.text(0,30,"LIFE",0)
+        pyxel.text(40,30,f"{str(self.life)}",0)
 
-        pyxel.text(0,30,f"{str(self.score)}",0)
+        pyxel.text(0,50,"SCORE",0)
+        pyxel.text(40,50,f"{str(self.score)}",0)
 
