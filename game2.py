@@ -1,13 +1,12 @@
 import random
-
+import pyttsx3
 import cvzone
 import pyxel
 import cv2
 import numpy as np
 import math
 from cvzone.HandTrackingModule import HandDetector
-
-
+from playsound import playsound
 
 
 
@@ -56,7 +55,7 @@ class Game2:
 
         self.detector = HandDetector(detectionCon=0.8, maxHands=1)
 
-
+        self.engine=pyttsx3.init()
 
         #check if your finger is up!!
         self.up=True
@@ -125,13 +124,12 @@ class Game2:
                 else:
                     item.get()
 
-                if self.up and item.x >= 90 and item.x <= 120 and not item.clear:
+                if self.up and item.x >= 97 and item.x <= 103 and not item.clear:
                     if not item.isGarbage:
                         self.score += 10
                         item.clear = True
                         item.caught=True
                     else:
-                        self.life -= 1
                         item.clear = True
                         item.caught=True
 
@@ -154,6 +152,7 @@ class Game2:
     def draw(self):
         pyxel.cls(3)
 
+
         pyxel.circ(100,50,10,7)
         pyxel.circ(100,50,8,6)
         pyxel.circ(100,50,6,5)
@@ -166,4 +165,7 @@ class Game2:
 
         for obj in incomingObjects:
                 pyxel.blt(obj.x,obj.y,0,obj.startX,objectXList[obj.ID],16,16,11)
+
+
+        pyxel.text(0,30,f"{str(self.score)}",0)
 
