@@ -88,7 +88,6 @@ class Game2:
 
             #what will be executed when your hand is detected
             if hands:
-
                 lmList = hands[0]["lmList"]
                 x, y, w, h = hands[0]['bbox']
                 x1 = lmList[5][0]
