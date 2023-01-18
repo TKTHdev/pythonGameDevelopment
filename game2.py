@@ -46,9 +46,8 @@ objectXList=[64,80,96,112,64,80,96,112]
 incomingObjects=[incomingObject()]
 
 
-
 class Game2:
-    def __init__(self):
+    def _init__(self):
 
         #camera setup
         self.cap = cv2.VideoCapture(0)

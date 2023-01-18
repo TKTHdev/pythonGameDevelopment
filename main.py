@@ -5,19 +5,18 @@ import pyxel
 from playsound import playsound
 
 while True:
-    playsound("assets/annnai.wav")
+    #playsound("assets/annnai.wav")
     gamemode=detect()
     #gamemode=1
 
     if gamemode==1:
-        playsound("assets/game1.wav")
+        #playsound("assets/game1.wav")
         a=Game()
 
 
 
     elif gamemode==2:
-        playsound("assets/game2.wav")
+        #playsound("assets/game2.wav")
         a=Game2()
-
 
 
