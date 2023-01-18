@@ -4,6 +4,7 @@ from game2 import Game2
 import pyxel
 from playsound import playsound
 
+
 while True:
     #playsound("assets/annnai.wav")
     gamemode=detect()
